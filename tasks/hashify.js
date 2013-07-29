@@ -20,7 +20,8 @@ module.exports = function(grunt) {
     var options = this.options({
       length: 32,
       copy: true,
-      keep_original: true
+      keep_original: true,
+      prefix: '-'
      });
 
     var basedir = null;
@@ -32,10 +33,10 @@ module.exports = function(grunt) {
           copy = null;
 
       if (ext) {
-        copy = path.basename(filename, ext) + '-' + hash + ext;
+        copy = path.basename(filename, ext) + options.prefix + hash + ext;
       }
       else {
-        copy = filename + '-' + hash;
+        copy = filename + options.prefix + hash;
       }
 
       grunt.file.copy(original, target + '/' + copy);
