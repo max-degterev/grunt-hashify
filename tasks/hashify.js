@@ -10,31 +10,56 @@
 
 module.exports = function(grunt) {
 
-  var crypto = require('crypto');
-  var path = require('path');
-
-  var formatJSON = function(hashes, banner) {
-    return banner + JSON.stringify(hashes);
-  };
+  var crypto = require('crypto'),
+      path = require('path');
 
   grunt.registerMultiTask('hashify', 'Generates a file containing file hashes.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      banner: '',
-      length: 32
-    });
+      length: 32,
+      copy: true,
+      keep_original: true
+     });
 
     var basedir = null;
-    if (options.basedir) {
-      basedir = path.resolve(options.basedir);
-    }
+    if (options.basedir) basedir = path.resolve(options.basedir);
+
+    var createFileCopy = function(original, target, hash) {
+      var filename = path.basename(original),
+          ext = path.extname(filename),
+          copy = null;
+
+      if (ext) {
+        copy = path.basename(filename, ext) + '-' + hash + ext;
+      }
+      else {
+        copy = filename + '-' + hash;
+      }
+
+      grunt.file.copy(original, target + '/' + copy);
+      grunt.log.write('Creating copy of a file: "' + copy + '".\n');
+
+      if (!options.keep_original) {
+        grunt.file.delete(original);
+        grunt.log.write('Deleted original file: "' + original + '".\n');
+      }
+    };
 
     // Iterate over all specified file groups.
     var _this = this;
-    this.files.forEach(function(f) {
-      grunt.log.write('Generating hashes file "' + f.dest + '"...');
-      var warnings = false;
-      var hashes = {};
+    var parseFileGroup = function(f) {
+      if (f.dest) {
+        grunt.log.write('Generating hashes file "' + f.dest + '".\n');
+      }
+      else {
+        grunt.log.write('Copying files without saving hashmap.\n');
+      }
+      var warnings = false,
+          hashes = {};
+
+      // Let's read current file if it exists
+      if (f.dest && grunt.file.exists(f.dest)) hashes = grunt.file.readJSON(f.dest);
+
       // Concat specified files.
       f.src.forEach(function(filename) {
         if (grunt.file.exists(filename)) {
@@ -54,6 +79,8 @@ module.exports = function(grunt) {
             }
 
             hashes[key] = hash;
+
+            if (options.copy && basedir) createFileCopy(filename, basedir, hash);
           }
         } else {
           grunt.log.warn('Source file "' + filename + '" not found.');
@@ -67,17 +94,18 @@ module.exports = function(grunt) {
 
       if (f.dest && hashes) {
         // Write the destination file.
-        grunt.file.write(f.dest, formatJSON(hashes, options.banner));
+        grunt.file.write(f.dest, JSON.stringify(hashes));
       } else {
         grunt.verbose.writeln('Not writing output file.');
       }
 
       // Print a success message.
       if (warnings) {
-        grunt.log.warn('Cachebuster file "' + f.dest + '" created, with warnings.');
+        grunt.log.warn('Hashmap file "' + f.dest + '" created, with warnings.');
       } else {
         grunt.log.ok();
       }
-    });
+    };
+    this.files.forEach(parseFileGroup);
   });
 };

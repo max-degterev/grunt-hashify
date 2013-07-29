@@ -23,36 +23,35 @@ var grunt = require('grunt');
 */
 
 exports.hashify = {
-  setUp: function(done) {
-    // setup here if necessary
-    done();
-  },
+  // setUp: function(done) {
+  //   // setup here if necessary
+  //   done();
+  // },
   default_options: function(test) {
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
+    var actual = grunt.file.read('tmp/default_options.json');
+    var expected = grunt.file.read('test/expected/default_options.json');
+
     test.equal(actual, expected, 'Should generate a JSON file with default options');
 
-    test.done();
-  },
-  custom_options: function(test) {
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'Should generate a JSON file with a banner');
+    var originalFile = grunt.file.read('test/fixtures/script.js');
+    var hashMap = grunt.file.readJSON('tmp/default_options.json');
+    var copiedFile = grunt.file.read('tmp/script-' + hashMap["../test/fixtures/script.js"] + '.js');
 
+    test.equal(originalFile, copiedFile, 'Should copy original file for cachebusting');
     test.done();
   },
   no_dest: function(test) {
-    var actual = grunt.file.read('tmp/no_dest_result');
-    test.equal(actual, '{"test/fixtures/testing":"fa6a5a3224d7da66d9e0bdec25f62cf0"}', 'no_dest complete handler in Gruntfile.js should have written tmp/no_dest_result');
+    var actual = grunt.file.read('tmp/no_dest_result.json');
 
+    test.equal(actual, '{"test/fixtures/style.css":"614494e1320c83d6456525c5a80744d7"}',
+    'no_dest complete handler in Gruntfile.js should have written tmp/no_dest_result');
     test.done();
   },
-  international: function(test) {
-    var actual = grunt.file.read('tmp/international');
-    var expected = grunt.file.read('test/expected/international');
-    test.equal(actual, expected, 'Should generate a JSON file for international content');
+  raw: function(test) {
+    var actual = grunt.file.read('tmp/raw.json');
+    var expected = grunt.file.read('test/expected/raw.json');
 
+    test.equal(actual, expected, 'Should generate a JSON file for raw content');
     test.done();
   }
-
 };
