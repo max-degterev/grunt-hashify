@@ -13,7 +13,9 @@ module.exports = function(grunt) {
   var crypto = require('crypto'),
       path = require('path');
 
-  grunt.registerMultiTask('hashify', 'Generates a file containing file hashes.', function() {
+  grunt.registerMultiTask('hashify',
+    'Generates a file containing file hashes, copies files with md5 as part of the name, partial updates of hashmap possible.',
+    function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       length: 32,
@@ -37,7 +39,7 @@ module.exports = function(grunt) {
       }
 
       grunt.file.copy(original, target + '/' + copy);
-      grunt.log.write('Creating copy of a file: "' + copy + '".\n');
+      grunt.log.write('Created copy of a file: "' + copy + '".\n');
 
       if (!options.keep_original) {
         grunt.file.delete(original);
@@ -52,7 +54,7 @@ module.exports = function(grunt) {
         grunt.log.write('Generating hashes file "' + f.dest + '".\n');
       }
       else {
-        grunt.log.write('Copying files without saving hashmap.\n');
+        grunt.log.write('Copying files without saving the hashmap.\n');
       }
       var warnings = false,
           hashes = {};
@@ -83,7 +85,7 @@ module.exports = function(grunt) {
             if (options.copy && basedir) createFileCopy(filename, basedir, hash);
           }
         } else {
-          grunt.log.warn('Source file "' + filename + '" not found.');
+          grunt.log.warn('Source file "' + filename + '" not found.\n');
           warnings = true;
         }
       });
@@ -92,12 +94,7 @@ module.exports = function(grunt) {
         hashes = options.complete.call(_this, hashes);
       }
 
-      if (f.dest && hashes) {
-        // Write the destination file.
-        grunt.file.write(f.dest, JSON.stringify(hashes));
-      } else {
-        grunt.verbose.writeln('Not writing output file.');
-      }
+      if (f.dest) grunt.file.write(f.dest, JSON.stringify(hashes));
 
       // Print a success message.
       if (warnings) {

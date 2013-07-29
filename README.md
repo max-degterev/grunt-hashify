@@ -1,15 +1,14 @@
 # grunt-hashify
 
 This grunt task iterates over its source files, calculating the MD5 hash of each, then creates a file containing the
-list of filenames and hashes. This file can then be used in your project to generate filenames that contain the MD5
-hash of the file's contents, e.g. main-ae65552d65cd19ab4f1996c77915ed42.js, so that even if a sticky cache is used,
-clients will always load the latest version of files whenever they change.
+list of filenames and hashes. It can also create a copy of original filename with hash as part of the name and works with
+pre-existing hashmap files extending them so partial updates are possible.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
+Deal with it.
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
-
+Installation:
 ```shell
 npm install grunt-hashify --save-dev
 ```
@@ -29,7 +28,9 @@ In your project's Gruntfile, add a section named `hashify` to the data object pa
 grunt.initConfig({
   hashify: {
     options: {
-      // Task-specific options go here.
+      basedir: 'tmp/', // All hashmap paths are gonna be relative to this. Also iused to fopy files to
+      copy: false, // Create a copy with hash in filename?
+      keep_original: true // If a copy created, keep original file?
     },
     your_target: {
       // Target-specific file lists and/or options go here.

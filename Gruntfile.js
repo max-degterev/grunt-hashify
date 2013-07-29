@@ -52,6 +52,7 @@ module.exports = function(grunt) {
         options: {
           complete: function(hashes) {
             grunt.file.write('tmp/raw.json', JSON.stringify(hashes));
+            return null;
           }
         },
         src: ['test/fixtures/raw']
