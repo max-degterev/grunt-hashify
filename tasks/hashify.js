@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     var options = this.options({
       length: 32,
       copy: true,
-      keep_original: true,
+      keep_original: false,
       prefix: '-'
      });
 
@@ -43,11 +43,11 @@ module.exports = function(grunt) {
       }
 
       grunt.file.copy(original, target + '/' + copy);
-      grunt.log.write('Created copy of a file: "' + copy + '".\n');
+      grunt.log.write('File ' + copy.cyan + ' created.\n');
 
       if (!options.keep_original) {
         grunt.file.delete(original);
-        grunt.log.write('Deleted original file: "' + original + '".\n');
+        grunt.log.write('File ' + original.red + ' deleted.\n');
       }
     };
 
@@ -55,10 +55,10 @@ module.exports = function(grunt) {
     var _this = this;
     var parseFileGroup = function(f) {
       if (f.dest) {
-        grunt.log.write('Generating hashes file "' + f.dest + '".\n');
+        grunt.log.write('File ' + f.dest.cyan + ' updated.\n');
       }
       else {
-        grunt.log.write('Copying files without saving the hashmap.\n');
+        grunt.log.write('No hashmap specified.\n');
       }
       var warnings = false,
           hashes = {};
@@ -68,28 +68,21 @@ module.exports = function(grunt) {
 
       // Concat specified files.
       f.src.forEach(function(filename) {
-        if (grunt.file.exists(filename)) {
-          if (!grunt.file.isDir(filename)) {
-            var source = grunt.file.read(filename, {
-              encoding: null
-            });
-            var hash = crypto.
-              createHash('md5').
-              update(source).
-              digest('hex').
-              slice(0, options.length);
+        if (grunt.file.exists(filename) && !grunt.file.isDir(filename)) {
+          var source = grunt.file.read(filename, { encoding: null }),
+              key = filename;
 
-            var key = filename;
-            if (basedir) {
-              key = path.relative(basedir, filename);
-            }
+          var hash = crypto.
+                      createHash('md5').
+                      update(source).
+                      digest('hex').
+                      slice(0, options.length);
 
-            hashes[key] = hash;
-
-            if (options.copy && basedir) createFileCopy(filename, basedir, hash);
-          }
+          if (basedir) key = path.relative(basedir, filename);
+          hashes[key] = hash;
+          if (options.copy && basedir) createFileCopy(filename, basedir, hash);
         } else {
-          grunt.log.warn('Source file "' + filename + '" not found.\n');
+          grunt.log.warn('File ' + filename.red + ' not found or is a directory.\n');
           warnings = true;
         }
       });
@@ -102,7 +95,7 @@ module.exports = function(grunt) {
 
       // Print a success message.
       if (warnings) {
-        grunt.log.warn('Hashmap file "' + f.dest + '" created, with warnings.');
+        grunt.log.warn('File ' + f.dest.red + ' created, with warnings.\n');
       } else {
         grunt.log.ok();
       }

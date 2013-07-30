@@ -32,7 +32,8 @@ module.exports = function(grunt) {
     hashify: {
       default_options: {
         options: {
-          basedir: 'tmp/'
+          basedir: 'tmp/',
+          keep_original: true
         },
         files: {
           'tmp/default_options.json': ['test/fixtures/style.css', 'test/fixtures/script.js']
