@@ -1,9 +1,12 @@
 /*
- * grunt-cachebuster
- * https://github.com/felthy/grunt-cachebuster
+ * grunt-hashify
+ * https://github.com/suprMax/grunt-hashify
  *
- * Copyright (c) 2013 Pete Feltham
- * Licensed under the MIT license.
+ * Copyright (c) 2013 Max Degterev
+ * `I dont give a shit` license
+ *
+ * based on Pete Feltham's plugin
+ * https://github.com/felthy/grunt-cachebuster
  */
 
 'use strict';
