@@ -30,24 +30,19 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     hashify: {
-      default_options: {
+      defaults: {
         options: {
           basedir: 'tmp/',
-          keep_original: true
+          copy: true, // keeps originals,
+          hashmap: 'tmp/defaults.json'
         },
-        files: {
-          'tmp/default_options.json': ['test/fixtures/style.css', 'test/fixtures/script.js']
-        }
-      },
-      no_dest: {
-        options: {
-          complete: function(hashes) {
-            grunt.file.write('tmp/no_dest_result.json', JSON.stringify(hashes));
-            // return null, so if the task attempts to use the return value it should trigger an error
-            return null;
-          }
-        },
-        src: ['test/fixtures/style.css']
+        files: [{
+          src: 'test/fixtures/style.css',
+          dest: 'style-min-{{hash}}.css'
+        }, {
+          src: 'test/fixtures/script.js',
+          dest: 'script-min-{{hash}}.js'
+        }]
       },
       raw: {
         options: {

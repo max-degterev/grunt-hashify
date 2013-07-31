@@ -27,24 +27,21 @@ exports.hashify = {
   //   // setup here if necessary
   //   done();
   // },
-  default_options: function(test) {
-    var actual = grunt.file.read('tmp/default_options.json');
-    var expected = grunt.file.read('test/expected/default_options.json');
+  defaults: function(test) {
+    var actual = grunt.file.read('tmp/defaults.json');
+    var expected = grunt.file.read('test/expected/defaults.json');
 
     test.equal(actual, expected, 'Should generate a JSON file with default options');
 
-    var originalFile = grunt.file.read('test/fixtures/script.js');
-    var hashMap = grunt.file.readJSON('tmp/default_options.json');
-    var copiedFile = grunt.file.read('tmp/script-' + hashMap["../test/fixtures/script.js"] + '.js');
-
-    test.equal(originalFile, copiedFile, 'Should copy original file for cachebusting');
     test.done();
   },
-  no_dest: function(test) {
-    var actual = grunt.file.read('tmp/no_dest_result.json');
+  files: function(test) {
+    var hashMap = grunt.file.readJSON('tmp/defaults.json');
 
-    test.equal(actual, '{"test/fixtures/style.css":"614494e1320c83d6456525c5a80744d7"}',
-    'no_dest complete handler in Gruntfile.js should have written tmp/no_dest_result');
+    var originalFile = grunt.file.read('test/fixtures/script.js');
+    var copiedFile = grunt.file.read('tmp/script-min-' + hashMap["../test/fixtures/script.js"] + '.js');
+
+    test.equal(originalFile, copiedFile, 'Should copy original file for cachebusting');
     test.done();
   },
   raw: function(test) {
