@@ -27,14 +27,20 @@ In your project's Gruntfile, add a section named `hashify` to the data object pa
 ```js
 grunt.initConfig({
   hashify: {
-    options: {
-      basedir: 'tmp/', // All hashmap paths are gonna be relative to this. Also iused to fopy files to
-      copy: false, // Create a copy with hash in filename?
-      keep_original: true // If a copy created, keep original file?
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
+    simple: {
+      options: {
+        basedir: 'tmp/', // hashmap paths will be relative to this dir, files will be copied to it as well
+        copy: true, // keeps originals,
+        hashmap: 'defaults.json' // where to put hashmap. relative to basedir
+      },
+      files: [{
+        src: 'test/fixtures/style.css', // md5 of the contents goies in hashmap
+        dest: 'style-min-{{hash}}.css' // {{hash}} will be replaced with md5 of the contents of the source
+      }, {
+        src: 'test/fixtures/script.js',
+        dest: 'script-min-{{hash}}.js'
+      }]
+    }
   },
 })
 ```

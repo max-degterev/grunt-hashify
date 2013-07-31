@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         options: {
           basedir: 'tmp/',
           copy: true, // keeps originals,
-          hashmap: 'tmp/defaults.json'
+          hashmap: 'defaults.json'
         },
         files: [{
           src: 'test/fixtures/style.css',

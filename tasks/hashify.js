@@ -24,13 +24,16 @@ module.exports = function(grunt) {
         copy: false
        });
 
-      var hashes = (options.hashmap && grunt.file.exists(options.hashmap)) ?
-                      grunt.file.readJSON(options.hashmap) : {},
+      var hashmap = options.hashmap ? options.hashmap : null;
+      if (hashmap && options.basedir) hashmap = options.basedir + hashmap;
+
+      var hashes = (hashmap && grunt.file.exists(hashmap)) ?
+                      grunt.file.readJSON(hashmap) : {},
           warnings = false;
 
       var copyFile = function(original, target, hash) {
         var copy = target.replace('{{hash}}', hash);
-        if (options.basedir) copy = options.basedir + '/' + copy;
+        if (options.basedir) copy = options.basedir + copy;
 
         grunt.file.copy(original, copy);
         grunt.log.write('File ' + copy.cyan + ' created.\n');
@@ -70,9 +73,9 @@ module.exports = function(grunt) {
       }
 
       // Hashes might've been nullified by the complete callback
-      if (hashes && options.hashmap) {
-        grunt.file.write(options.hashmap, JSON.stringify(hashes));
-        grunt.log.write('File ' + options.hashmap.cyan + ' created/updated.\n');
+      if (hashes && hashmap) {
+        grunt.file.write(hashmap, JSON.stringify(hashes));
+        grunt.log.write('File ' + hashmap.cyan + ' created/updated.\n');
       }
 
       // Print a success message.
