@@ -30,12 +30,13 @@ grunt.initConfig({
     simple: {
       options: {
         basedir: 'tmp/', // hashmap paths will be relative to this dir, files will be copied to it as well
-        copy: true, // keeps originals,
+        copy: true, // keeps originals
         hashmap: 'defaults.json' // where to put hashmap. relative to basedir
       },
       files: [{
         src: 'test/fixtures/style.css', // md5 of the contents goies in hashmap
-        dest: 'style-min-{{hash}}.css' // {{hash}} will be replaced with md5 of the contents of the source
+        dest: 'style-min-{{hash}}.css', // {{hash}} will be replaced with md5 of the contents of the source
+        key: 'awesome.js' // key to use in the hashmap
       }, {
         src: 'test/fixtures/script.js',
         dest: 'script-min-{{hash}}.js'

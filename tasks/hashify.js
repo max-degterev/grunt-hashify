@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         f.src.forEach(function(filename) {
           if (grunt.file.exists(filename) && !grunt.file.isDir(filename)) {
             var source = grunt.file.read(filename, { encoding: null }),
-                key = options.basedir ? path.relative(options.basedir, filename) : filename;
+                key = f.key || (options.basedir ? path.relative(options.basedir, filename) : filename);
 
             var hash = crypto.
                         createHash('md5').
