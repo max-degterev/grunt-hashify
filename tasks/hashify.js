@@ -21,7 +21,8 @@ module.exports = function(grunt) {
       // Merge task-specific and/or target-specific options with these defaults.
       var options = this.options({
         length: 32,
-        copy: false
+        copy: false,
+        force: false
        });
 
       var hashmap = options.hashmap ? options.hashmap : null;
@@ -39,7 +40,7 @@ module.exports = function(grunt) {
         grunt.log.write('File ' + copy.cyan + ' created.\n');
 
         if (!options.copy) {
-          grunt.file.delete(original);
+          grunt.file.delete(original, {"force": options.force});
           grunt.log.write('File ' + original.red + ' deleted.\n');
         }
       };
