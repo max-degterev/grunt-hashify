@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       var options = this.options({
         length: 32,
         copy: false,
-        force: false
+        force: grunt.option('force') === true,
        });
 
       var hashmap = options.hashmap ? options.hashmap : null;
