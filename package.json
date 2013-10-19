@@ -1,7 +1,7 @@
 {
   "name": "grunt-hashify",
   "description": "Generates a file containing file hashes, copies files with md5 as part of the name, partial updates of hashmap possible.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/suprMax/grunt-hashify",
   "author": {
     "name": "Max Degterev",

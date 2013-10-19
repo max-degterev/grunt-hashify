@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       var options = this.options({
         length: 32,
         copy: false,
-        force: grunt.option('force') === true,
+        force: grunt.option('force') === true
        });
 
       var hashmap = options.hashmap ? options.hashmap : null;
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         grunt.log.write('File ' + copy.cyan + ' created.\n');
 
         if (!options.copy) {
-          grunt.file.delete(original, {"force": options.force});
+          grunt.file.delete(original, { force: options.force });
           grunt.log.write('File ' + original.red + ' deleted.\n');
         }
       };
