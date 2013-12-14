@@ -28,8 +28,8 @@ exports.hashify = {
   //   done();
   // },
   defaults: function(test) {
-    var actual = grunt.file.read('tmp/defaults.json');
-    var expected = grunt.file.read('test/expected/defaults.json');
+    var actual = grunt.file.read('tmp/defaults.json').toUpperCase();
+    var expected = grunt.file.read('test/expected/defaults.json').toUpperCase();
 
     test.equal(actual, expected, 'Should generate a JSON file with default options');
 
@@ -45,8 +45,8 @@ exports.hashify = {
     test.done();
   },
   raw: function(test) {
-    var actual = grunt.file.read('tmp/raw.json');
-    var expected = grunt.file.read('test/expected/raw.json');
+    var actual = grunt.file.read('tmp/raw.json').toUpperCase();
+    var expected = grunt.file.read('test/expected/raw.json').toUpperCase();
 
     test.equal(actual, expected, 'Should generate a JSON file for raw content');
     test.done();

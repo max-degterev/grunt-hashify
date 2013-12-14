@@ -22,6 +22,7 @@ module.exports = function(grunt) {
       var options = this.options({
         length: 32,
         copy: false,
+        uppercase: false,
         force: grunt.option('force') === true
        });
 
@@ -57,7 +58,7 @@ module.exports = function(grunt) {
                         update(source).
                         digest('hex').
                         slice(0, options.length);
-
+            hash = options.uppercase?hash.toUpperCase():hash;
             hashes[key] = hash;
             if (f.dest) copyFile(filename, f.dest, hash);
           }

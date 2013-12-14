@@ -34,6 +34,7 @@ module.exports = function(grunt) {
         options: {
           basedir: 'tmp/', // hashmap paths will be relative to this dir, files will be copied to it as well
           copy: true, // keeps originals
+          uppercase: true, //md5 use uppercase
           hashmap: 'defaults.json' // where to put hashmap. relative to basedir
         },
         files: [{
