@@ -12,5 +12,6 @@ logs
 results
 .idea
 tmp
+node_modules/
 
 npm-debug.log
