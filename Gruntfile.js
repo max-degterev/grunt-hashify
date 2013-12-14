@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         options: {
           basedir: 'tmp/', // hashmap paths will be relative to this dir, files will be copied to it as well
           copy: true, // keeps originals
-          uppercase: true, //md5 use uppercase
+          uppercase: false, // use uppercase md5
           hashmap: 'defaults.json' // where to put hashmap. relative to basedir
         },
         files: [{
@@ -54,6 +54,22 @@ module.exports = function(grunt) {
           }
         },
         src: ['test/fixtures/raw']
+      },
+      uppercase: {
+        options: {
+          basedir: 'tmp/', // hashmap paths will be relative to this dir, files will be copied to it as well
+          copy: true, // keeps originals
+          uppercase: true, // use uppercase md5
+          hashmap: 'uppercase.json' // where to put hashmap. relative to basedir
+        },
+        files: [{
+          src: 'test/fixtures/style.css', // md5 of the contents goies in hashmap
+          dest: 'uppercase-style-min-{{hash}}.css', // {{hash}} will be replaced with md5 of the contents of the source
+          key: 'awesome.js' // key to use in the hashmap
+        }, {
+          src: 'test/fixtures/script.js',
+          dest: 'uppercase-script-min-{{hash}}.js'
+        }]
       }
     },
 

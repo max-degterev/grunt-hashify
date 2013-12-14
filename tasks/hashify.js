@@ -58,8 +58,10 @@ module.exports = function(grunt) {
                         update(source).
                         digest('hex').
                         slice(0, options.length);
-            hash = options.uppercase?hash.toUpperCase():hash;
+
+            if (options.uppercase) hash = hash.toUpperCase();
             hashes[key] = hash;
+
             if (f.dest) copyFile(filename, f.dest, hash);
           }
           else {

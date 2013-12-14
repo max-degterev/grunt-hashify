@@ -28,8 +28,8 @@ exports.hashify = {
   //   done();
   // },
   defaults: function(test) {
-    var actual = grunt.file.read('tmp/defaults.json').toUpperCase();
-    var expected = grunt.file.read('test/expected/defaults.json').toUpperCase();
+    var actual = grunt.file.read('tmp/defaults.json');
+    var expected = grunt.file.read('test/expected/defaults.json');
 
     test.equal(actual, expected, 'Should generate a JSON file with default options');
 
@@ -45,10 +45,21 @@ exports.hashify = {
     test.done();
   },
   raw: function(test) {
-    var actual = grunt.file.read('tmp/raw.json').toUpperCase();
-    var expected = grunt.file.read('test/expected/raw.json').toUpperCase();
+    var actual = grunt.file.read('tmp/raw.json');
+    var expected = grunt.file.read('test/expected/raw.json');
 
     test.equal(actual, expected, 'Should generate a JSON file for raw content');
+    test.done();
+  },
+  uppercase: function(test) {
+    var hashMap = grunt.file.readJSON('tmp/uppercase.json');
+
+    var originalFile = grunt.file.read('test/fixtures/script.js');
+    var copiedFile = grunt.file.read('tmp/uppercase-script-min-' + hashMap["../test/fixtures/script.js"] + '.js');
+
+    test.equal(originalFile, copiedFile, 'Uppercase should copy original file for cachebusting');
+    test.equal(hashMap["../test/fixtures/script.js"], hashMap["../test/fixtures/script.js"].toUpperCase(),
+      'Filename and hash in hashmap are uppercase');
     test.done();
   }
 };
